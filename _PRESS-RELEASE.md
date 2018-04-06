@@ -18,9 +18,11 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
+  The product is a reminder app where customers can enter their phone number and schedule a text, phone call, or email sent to them when they want.
 
 ## Sub-Heading ##
   > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  The product is marketed towards people who need to be reminded about tasks at a specific time.
 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
