@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 require('dotenv').config()
 var items = require('../database-pg');
+const helpers = require('../helpers/twilio');
 
 var app = express();
 
@@ -24,6 +25,8 @@ app.use(express.static(__dirname + '/../node_modules'));
 
 app.get('/', function(req, res) {
   res.send('Hello World!');
+  helpers.postMessageToTwilio();
+  console.log('got it');
 });
 
 

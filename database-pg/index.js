@@ -1,11 +1,6 @@
 var pg = require('pg');
 
-var connection = ({
-  host     : process.env.DB_HOST,
-  user     : process.env.DB_USER,
-  password : process.env.DB_PW,
-  database : process.env.DB_NAME
-});
+var connection = process.env.DATABASE_URL;
 
 const client = new pg.Client(connection);
 client.connect();
@@ -32,13 +27,11 @@ const updateStatus = (phoneNumber) => {
 
 // CREATE QUERY TO CHECK IF ANY TIMES ARE GREATER THAN CURRENT TIME
 const checkMessages = () => {
-  return client.query('SELECT users.phone_number, messages.message_text \
-  FROM users INNER JOIN messages ON (users.user_id = messages.user_id) \
-  WHERE messages.scheduled_time < CURRENT_TIMESTAMP')
+  return client.query('SELECT users.phone_number, messages.message_text FROM users INNER JOIN messages ON (users.user_id = messages.user_id) WHERE messages.scheduled_time < CURRENT_TIMESTAMP;')
 }
 
 // createUser(3612496953, 123456);
 // updateStatus(3612496953);
-// insertMessage('hello', '2001-09-28 01:00:00', 3612496953);
+// insertMessage('whatup', '2001-09-28 01:00:00', 3612496953);
 
 module.exports.createUser = createUser;
