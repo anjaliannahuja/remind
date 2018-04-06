@@ -6,7 +6,7 @@ CREATE DATABASE twilio;
 
 CREATE TABLE users (
   user_id BIGSERIAL PRIMARY KEY,
-  phone_number integer NOT NULL,
+  phone_number varchar(20) NOT NULL,
   verify_code integer NOT NULL,
   verified_status boolean NOT NULL
 );
