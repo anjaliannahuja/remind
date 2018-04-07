@@ -8,7 +8,7 @@ require('dotenv').config()
 let app = express();
 
 // UNCOMMENT FOR REACT
-// app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(express.static(__dirname + '/../react-client/dist'));
 
 // UNCOMMENT FOR ANGULAR
 // app.use(express.static(__dirname + '/../angular-client'));
@@ -63,7 +63,7 @@ app.post('/register', function (req, res) {
 
 app.post('/schedule', function(req, res) {
   let phoneNumber = '3612496953';
-  let message = 'REMINDER TO CALL DOCTOR';
+  let message = 'REMINDER 1';
   let scheduledTime = '2017-09-28 01:00';
   new Promise((resolve, reject) => {
    resolve(db.insertMessage(message, scheduledTime, phoneNumber));
