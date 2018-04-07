@@ -23,8 +23,8 @@ app.use(session({
 
 app.post('/register', function (req, res) {
   let phoneNumber = '3612496953';
-  let verifyCode = Math.floor(Math.random()*900000) + 100000;
-
+  // let verifyCode = Math.floor(Math.random()*900000) + 100000;
+  let verifyCode = 1111;
   new Promise((resolve, reject) => {
     resolve(db.createUser(phoneNumber, verifyCode));
   })
@@ -32,7 +32,7 @@ app.post('/register', function (req, res) {
       helpers.createTwilioMessage(phoneNumber, 'Verification Number: ' + verifyCode);
       req.session.verified = false;
       req.session.verifyCode = verifyCode;
-      res.status(201).end('Message created!');
+      res.status(201).end(' Verification message sent!');
     })
     .catch((err) => {
       console.log(err);
@@ -42,7 +42,7 @@ app.post('/register', function (req, res) {
   
   
   app.post('/verify', function (req, res) {
-    let userVerifyCode = 711766;
+    let userVerifyCode = 1111;
     new Promise((resolve, reject) => {
       if (userVerifyCode === req.session.verifyCode) {
         resolve(db.updateStatus('3612496953'));
@@ -68,6 +68,8 @@ app.post('/schedule', function(req, res) {
   new Promise((resolve, reject) => {
     if(res.session.verified === true) {
       resolve(db.insertMessage(message, scheduledTime, phoneNumber));
+    } else {
+      reject();
     }
   })
     .then(() => {
@@ -85,19 +87,19 @@ app.listen(process.env.PORT, function() {
 
 
 // SET INTERVAL FOR MESSAGES
-setInterval(() => {
-  db.checkMessages()
-    .then(messages => {
-      messages = JSON.parse(messages.rows);
-      console.log(messages);
-      if (messages.length > 0) {
-        messages.forEach(message => {
-          helpers.createTwilioMessage(message.phone_number, message.message_text);
-        });
-      }
-    })
-    .catch(err => {
-      console.log('No messages returned: ' + err);
-    });
+// setInterval(() => {
+//   let messages = [];
+//   db.checkMessages()
+//     .then(messages => {
+//       console.log(messages);
+//       if (messages.length > 0) {
+//         messages.forEach(message => {
+//           helpers.createTwilioMessage(message.phone_number, message.message_text);
+//         });
+//       }
+//     })
+//     .catch(err => {
+//       console.log('No messages returned: ' + err);
+//     });
 
-}, 1000);
+// }, 1000);
