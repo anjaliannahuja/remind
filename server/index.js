@@ -66,11 +66,7 @@ app.post('/schedule', function(req, res) {
   let message = 'REMINDER TO CALL DOCTOR';
   let scheduledTime = '2017-09-28 01:00';
   new Promise((resolve, reject) => {
-    if(res.session.verified === true) {
-      resolve(db.insertMessage(message, scheduledTime, phoneNumber));
-    } else {
-      reject();
-    }
+   resolve(db.insertMessage(message, scheduledTime, phoneNumber));
   })
     .then(() => {
       res.status(201).end('Reminder stored');
