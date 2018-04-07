@@ -1,7 +1,7 @@
 angular.module('app')
 .service('messagesService', function($http) {
-  this.getAll = function(callback) {
-    $http.get('/register')
+  this.registerUser = function(callback) {
+    $http.post('/register')
     .then(function({data}) {
       if(callback) {
         callback(data);

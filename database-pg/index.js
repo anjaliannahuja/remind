@@ -12,7 +12,9 @@ client.connect();
 
 // INSERT MESSAGE INTO DB
 const insertMessage = (messageText, scheduledTime, phoneNumber) => {
-  client.query('INSERT INTO messages (message_text, scheduled_time, user_id) values ($1, $2, (select user_id from users where phone_number = $3 AND verified_status = true))', [messageText, scheduledTime, phoneNumber]);
+  client.query('INSERT INTO messages (message_text, scheduled_time, user_id) values ($1, $2, (select user_id from users where phone_number = $3 AND verified_status = true))', [messageText, scheduledTime, phoneNumber])
+    .then(() => console.log('Message created successfully'))
+    .catch((err) => console.log('Message not created: ' + err));
 };
 
 // INSERT TO INSERT NEW USER BEFORE VERIFIED
@@ -31,7 +33,7 @@ const updateStatus = (phoneNumber) => {
 
 // CREATE QUERY TO CHECK IF ANY TIMES ARE GREATER THAN CURRENT TIME
 const checkMessages = () => {
-  return client.query('SELECT users.phone_number, messages.message_text FROM users INNER JOIN messages ON (users.user_id = messages.user_id) WHERE messages.scheduled_time < CURRENT_TIMESTAMP;');
+  return client.query('SELECT messages.message_id, users.phone_number, messages.message_text FROM users INNER JOIN messages ON (users.user_id = messages.user_id) WHERE messages.scheduled_time < CURRENT_TIMESTAMP;');
 };
 
 // DELETE USER
@@ -41,11 +43,20 @@ const deleteUser = (phoneNumber) => {
     .catch(err => console.log(err))
 };
 
+const deleteMessage = (messageId) => {
+  client.query('DELETE FROM messages WHERE message_id = $1', [messageId])
+  .then(() => console.log('Message deleted'))
+  .catch(err => console.log(err))
+}
+
 // createUser('3612496953', 123456);
 // updateStatus(3612496953);
-// insertMessage('whatup', '2001-09-28 01:00:00', 3612496953);
+// deleteMessage(2);
+// insertMessage('whatup', '2019-09-28 01:00:00', 3612496953);
 
 module.exports.insertMessage = insertMessage;
 module.exports.createUser = createUser;
 module.exports.updateStatus = updateStatus;
 module.exports.checkMessages = checkMessages;
+module.exports.deleteUser = deleteUser;
+module.exports.deleteMessage = deleteMessage;

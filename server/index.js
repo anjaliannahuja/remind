@@ -83,19 +83,19 @@ app.listen(process.env.PORT, function() {
 
 
 // SET INTERVAL FOR MESSAGES
-// setInterval(() => {
-//   let messages = [];
-//   db.checkMessages()
-//     .then(messages => {
-//       console.log(messages);
-//       if (messages.length > 0) {
-//         messages.forEach(message => {
-//           helpers.createTwilioMessage(message.phone_number, message.message_text);
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       console.log('No messages returned: ' + err);
-//     });
+setInterval(() => {
+  let messages = [];
+  db.checkMessages()
+    .then(messages => {
+      if (messages.rows.length > 0) {
+        messages.rows.forEach(message => {
+          helpers.createTwilioMessage(message.phone_number, message.message_text);
+          db.deleteMessage(message.message_id);
+        });
+      }
+    })
+    .catch(err => {
+      console.log('No messages returned: ' + err);
+    });
 
-// }, 1000);
+}, 1000);
