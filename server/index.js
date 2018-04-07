@@ -1,10 +1,11 @@
+let express = require('express');
+let bodyParser = require('body-parser');
+let session = require('express-session')
+let db = require('../database-pg/index');
+let helpers = require('../helpers/twilio');
 require('dotenv').config()
-const helpers = require('../helpers/twilio');
-var express = require('express');
-var bodyParser = require('body-parser');
-var db = require('../database-pg');
 
-var app = express();
+let app = express();
 
 // UNCOMMENT FOR REACT
 // app.use(express.static(__dirname + '/../react-client/dist'));
@@ -13,42 +14,90 @@ var app = express();
 // app.use(express.static(__dirname + '/../angular-client'));
 app.use(express.static(__dirname + '/../node_modules'));
 
+app.use(session({
+  secret: 'anything',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
 app.post('/register', function (req, res) {
-  let phoneNumber = req.body.phoneNumber || '3612496953';
+  let phoneNumber = '3612496953';
   let verifyCode = Math.floor(Math.random()*900000) + 100000;
 
-  Promise.all(db.createUser(phoneNumber, verifyCode), helpers.createTwilioMessage(phoneNumber, verifyCode))
+  new Promise((resolve, reject) => {
+    resolve(db.createUser(phoneNumber, verifyCode));
+  })
     .then(() => {
-      res.status(201).end();
+      helpers.createTwilioMessage(phoneNumber, 'Verification Number: ' + verifyCode);
+      req.session.verified = false;
+      req.session.verifyCode = verifyCode;
+      res.status(201).end('Message created!');
     })
     .catch((err) => {
-      res.status(500).end('Fail to send messages');
+      console.log(err);
+      res.status(500).end('Fail to send verification code');
     });
-    
+  });
   
   
-  // helpers.createTwilioMessage(phoneNumber, verifyCode)
-  //   .then()
+  app.post('/verify', function (req, res) {
+    let userVerifyCode = 711766;
+    new Promise((resolve, reject) => {
+      if (userVerifyCode === req.session.verifyCode) {
+        resolve(db.updateStatus('3612496953'));
+        req.session.verified = true;
+      } else {
+        reject();
+      }
+    })
+    .then(() => {
+      res.status(201).end('User verified');
+    })
+    .catch(err => {
+      console.log(err);
+      db.deleteUser('3612496953');
+      res.status(500).end('User verified incorrectly and deleted');
+    })
 });
 
-
-// app.get('/items', function (req, res) {
-//   items.selectAll(function(err, data) {
-//     if(err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
-
-// app.get('/', function(req, res) {
-//   res.send('Hello World!');
-//   helpers.createTwilioMessage('3612496953', 'test with server');
-// });
-
+app.post('/schedule', function(req, res) {
+  let phoneNumber = '3612496953';
+  let message = 'REMINDER TO CALL DOCTOR';
+  let scheduledTime = '2017-09-28 01:00';
+  new Promise((resolve, reject) => {
+    if(res.session.verified === true) {
+      resolve(db.insertMessage(message, scheduledTime, phoneNumber));
+    }
+  })
+    .then(() => {
+      res.status(201).end('Reminder stored');
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).end('Message not stored');
+    })
+});
 
 app.listen(process.env.PORT, function() {
   console.log('listening on port 3000!');
 });
 
+
+// SET INTERVAL FOR MESSAGES
+setInterval(() => {
+  db.checkMessages()
+    .then(messages => {
+      messages = JSON.parse(messages.rows);
+      console.log(messages);
+      if (messages.length > 0) {
+        messages.forEach(message => {
+          helpers.createTwilioMessage(message.phone_number, message.message_text);
+        });
+      }
+    })
+    .catch(err => {
+      console.log('No messages returned: ' + err);
+    });
+
+}, 1000);
