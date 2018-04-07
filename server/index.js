@@ -7,6 +7,9 @@ require('dotenv').config()
 
 let app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 // UNCOMMENT FOR REACT
 app.use(express.static(__dirname + '/../react-client/dist'));
 
@@ -22,9 +25,9 @@ app.use(session({
 }));
 
 app.post('/register', function (req, res) {
-  let phoneNumber = '3612496953';
-  // let verifyCode = Math.floor(Math.random()*900000) + 100000;
-  let verifyCode = 1111;
+  let phoneNumber = req.body.phoneNumber;
+  let verifyCode = Math.floor(Math.random()*900000) + 100000;
+
   new Promise((resolve, reject) => {
     resolve(db.createUser(phoneNumber, verifyCode));
   })

@@ -1,34 +1,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import List from './components/List.jsx';
+import Register from './components/Register.jsx';
+import axios from 'axios'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      items: []
+
+    this.registerPhoneNumber = this.registerPhoneNumber.bind(this);
+
+    this.state = {
+      clicked: false
     }
   }
-
   componentDidMount() {
-    $.ajax({
-      url: '/items', 
-      success: (data) => {
-        this.setState({
-          items: data
-        })
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
+
+  }
+
+  registerPhoneNumber (phoneNumber) {
+    axios.post('/register', {
+      phoneNumber: phoneNumber
+    })
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
+  }
+
+  verifyPhoneNumber (verificationCode) {
+    axios.post('/verify', {
+      userVerifyCode: verificationCode
+    })
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
   }
 
   render () {
     return (<div>
-      <h1>Item List</h1>
-      <List items={this.state.items}/>
+      <h1>Remind Me</h1>
+      {this.state.clicked ? <div>Hello World</div> : <div>Goodbye</div>}
+      <Register onRegister={this.registerPhoneNumber}/>
+      {}
     </div>)
   }
 }
