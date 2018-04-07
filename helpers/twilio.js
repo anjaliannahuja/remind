@@ -1,20 +1,21 @@
-const request = require('request');
+
 const twilio = require('twilio');
+require('dotenv').config()
 
-const postMessageToTwilio = () => {
-  const accountSid = 'AC078d583e37baa9f2be36f44219197bd7';
-  const authToken = 'dd71fec34715d8c0e932a10434d8809c';
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
 
-  // require the Twilio module and create a REST client
-  const client = twilio(accountSid, authToken);
+const client = twilio(accountSid, authToken);
 
-  client.messages
-    .create({
-      to: '+13612496953',
-      from: '+15127906796',
-      body: 'WHATUPPP',
-    })
-    .then(message => console.log(message.sid));
-};
+const createTwilioMessage = (phoneNumber, message) => {
+  client.messages.create({
+    to: '+1' + phoneNumber,
+    from: process.env.TWILIO_NUMBER,
+    body: message
+  })
+  .then((message) => console.log(message.sid))
+  .catch();
+}
 
-module.exports.postMessageToTwilio = postMessageToTwilio;
+
+module.exports.createTwilioMessage = createTwilioMessage;

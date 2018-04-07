@@ -1,7 +1,7 @@
 angular.module('app')
-.service('itemsService', function($http) {
+.service('messagesService', function($http) {
   this.getAll = function(callback) {
-    $http.get('/items')
+    $http.get('/register')
     .then(function({data}) {
       if(callback) {
         callback(data);

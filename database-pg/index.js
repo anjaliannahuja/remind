@@ -18,7 +18,6 @@ const createUser = (phoneNumber, verifyCode) => {
   [phoneNumber, verifyCode]);
 };
 
-
 // UPDATE VERIFIED STATUS TO BE TRUE IF CLIENT RECEIVES MESSAGE
 const updateStatus = (phoneNumber) => {
   client.query('UPDATE users SET verified_status = true WHERE phone_number = $1', 
@@ -34,4 +33,7 @@ const checkMessages = () => {
 // updateStatus(3612496953);
 // insertMessage('whatup', '2001-09-28 01:00:00', 3612496953);
 
+module.exports.insertMessage = insertMessage;
 module.exports.createUser = createUser;
+module.exports.updateStatus = updateStatus;
+module.exports.checkMessages = checkMessages;
