@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 const text = {
   'padding': '15px',
@@ -10,12 +11,7 @@ const text = {
 }
 
 const input = {
-  'margin-left': '15px',
   'width': '250px'
-}
-
-const button = {
-  'margin-left': '15px'
 }
 
 class Verify extends React.Component {
@@ -44,9 +40,11 @@ class Verify extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> A verification code was sent to your number. Enter your code below:</Header>
-      <Input icon='key' iconPosition='left' style={input} placeholder='Verification Code' value={this.state.verificationCode} onChange={this.onChange}></Input>
-      <Button style={button} inverted color='black' onClick={this.verify}>Verify</Button>
+      <Container style={text}>
+        A verification code was sent to your number. Enter your code below:<br/><br/>
+        <Input icon='key' iconPosition='left' style={input} placeholder='Verification Code' value={this.state.verificationCode} onChange={this.onChange}></Input><br/><br/>
+        <Button inverted color='black' onClick={this.verify}>Verify</Button>
+      </Container>
     </div>)
   }
 }

@@ -3,6 +3,7 @@ import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
 import { Icon } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 const text = {
   'padding': '15px',
@@ -11,12 +12,7 @@ const text = {
 }
 
 const input = {
-  'margin-left': '15px',
   'width': '250px'
-}
-
-const button = {
-  'margin-left': '15px'
 }
 
 class Register extends React.Component {
@@ -45,9 +41,11 @@ class Register extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Enter your 10-digit Phone Number to Register: </Header>
-      <Input icon='phone' iconPosition='left' style={input} placeholder='xxx-xxx-xxxx' value={this.state.phoneNumber} onChange={this.onChange}></Input>
-      <Button style={button} inverted color='black' onClick={this.register}>Register</Button>
+      <Container style={text}>
+      Welcome to Remind! Enter your 10-digit phone number below to register and start scheduling text reminders. <br/> <br/>
+        <Input icon='phone' iconPosition='left' style={input} placeholder='xxx-xxx-xxxx' value={this.state.phoneNumber} onChange={this.onChange}></Input> <br/> <br/>
+        <Button inverted color='black' onClick={this.register}>Register</Button>
+      </Container>
     </div>)
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 const text = {
   'padding': '15px',
@@ -10,12 +11,7 @@ const text = {
 }
 
 const input = {
-  'margin-left': '15px',
   'width': '250px'
-}
-
-const button = {
-  'margin-left': '15px'
 }
 
 class CreatePassword extends React.Component {
@@ -43,9 +39,11 @@ class CreatePassword extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Enter a Password to login next time: </Header>
-      <Input icon='lock' iconPosition='left' type='password' style={input} placeholder='Password' value={this.state.password} onChange={this.onChange}></Input>
-      <Button style={button} inverted color='black' onClick={this.createPassword}>Create</Button>
+      <Container style={text}>
+        Create a password:<br/><br/>
+        <Input icon='lock' iconPosition='left' type='password' style={input} placeholder='Password' value={this.state.password} onChange={this.onChange}></Input><br/><br/>
+        <Button inverted color='black' onClick={this.createPassword}>Create</Button>
+      </Container> 
     </div>)
   }
 }

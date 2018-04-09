@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 const text = {
   'padding': '15px',
@@ -10,12 +11,7 @@ const text = {
 }
 
 const input = {
-  'margin-left': '15px',
   'width': '250px'
-}
-
-const button = {
-  'margin-left': '15px'
 }
 
 class Schedule extends React.Component {
@@ -52,12 +48,11 @@ class Schedule extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Schedule your reminder below: </Header>
-      <Header size='tiny' style={text}>Reminder Message: </Header>
-      <Input icon='comment' iconPosition='left' style={input} placeholder='Message' value={this.state.message} onChange={this.onMessageChange}></Input> <br/>
-      <Header size='tiny' style={text}>Scheduled Day and Time: </Header>
-      <Input icon='calendar alternate' iconPosition='left' style={input} value={this.state.scheduledTime} onChange={this.onScheduledChange} type="datetime-local"></Input> <br/> <br/>
-      <Button inverted color='black' style={button} onClick={this.schedule}>Schedule</Button>
+      <Container style={text}>
+        Reminder Message: <br/> <Input icon='comment' iconPosition='left' style={input} placeholder='Message' value={this.state.message} onChange={this.onMessageChange}></Input> <br/> <br/>
+        Scheduled Day and Time: <br/><Input icon='calendar alternate' iconPosition='left' style={input} value={this.state.scheduledTime} onChange={this.onScheduledChange} type="datetime-local"></Input> <br/> <br/>
+        <Button inverted color='black' onClick={this.schedule}>Schedule Reminder</Button>
+      </Container>
     </div>)
   }
 }

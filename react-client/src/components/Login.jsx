@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 const text = {
   'padding': '15px',
@@ -10,12 +11,7 @@ const text = {
 }
 
 const input = {
-  'margin-left': '15px',
   'width': '250px'
-}
-
-const button = {
-  'margin-left': '15px'
 }
 
 class Login extends React.Component {
@@ -51,10 +47,13 @@ class Login extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Enter your 10-digit Phone Number and Password: </Header>
-      <Input icon='phone' iconPosition='left' style={input} placeholder='xxx-xxx-xxxx' value={this.state.phoneNumber} onChange={this.onPhoneChange}></Input>      
-      <Input icon='lock' iconPosition='left' type='password' style={input} placeholder='Password' value={this.state.password} onChange={this.onPasswordChange}></Input>
-      <Button style={button} inverted color='black' onClick={this.login}>Login</Button>
+      <Container style={text}>
+        Welcome to Remind! Login below to start scheduling text reminders.<br/><br/>
+        <Input icon='phone' iconPosition='left' style={input} placeholder='xxx-xxx-xxxx' value={this.state.phoneNumber} onChange={this.onPhoneChange}></Input> <br/><br/>
+        <Input icon='lock' iconPosition='left' type='password' style={input} placeholder='Password' value={this.state.password} onChange={this.onPasswordChange}></Input>
+        <br/><br/>
+        <Button inverted color='black' onClick={this.login}>Login</Button>
+      </Container>
     </div>)
   }
 }
