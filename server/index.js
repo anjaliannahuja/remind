@@ -1,6 +1,7 @@
 let express = require('express');
 let bodyParser = require('body-parser');
-let session = require('express-session')
+let session = require('express-session');
+let crypto = require('crypto');
 let db = require('../database-pg/index');
 let helpers = require('../helpers/twilio');
 require('dotenv').config();
@@ -31,37 +32,80 @@ app.post('/register', function (req, res) {
   new Promise((resolve, reject) => {
     resolve(db.createUser(phoneNumber, verifyCode));
   })
-    .then(() => {
-      helpers.createTwilioMessage(phoneNumber, 'Verification Number: ' + verifyCode);
-      req.session.verified = false;
-      req.session.phoneNumber = phoneNumber;
-      req.session.verifyCode = verifyCode;
-      res.status(201).end(' Verification message sent!');
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).end('Fail to send verification code');
-    });
+  .then(() => {
+    helpers.createTwilioMessage(phoneNumber, 'Verification Number: ' + verifyCode);
+    req.session.verified = false;
+    req.session.phoneNumber = phoneNumber;
+    req.session.verifyCode = verifyCode;
+    res.status(201).end(' Verification message sent!');
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).end('Fail to send verification code');
   });
+});
   
   
-  app.post('/verify', function (req, res) {
-    let userVerifyCode = req.body.userVerifyCode;
-    new Promise((resolve, reject) => {
-      if (userVerifyCode === req.session.verifyCode.toString()) {
-        resolve(db.updateStatus(req.session.phoneNumber));
-        req.session.verified = true;
+app.post('/verify', function (req, res) {
+  let userVerifyCode = req.body.userVerifyCode;
+  new Promise((resolve, reject) => {
+    if (userVerifyCode === req.session.verifyCode.toString()) {
+      resolve(db.updateStatus(req.session.phoneNumber));
+      req.session.verified = true;
+    } else {
+      reject();
+    }
+  })
+  .then(() => {
+    res.status(201).end('User verified');
+  })
+  .catch(err => {
+    console.log(err);
+    db.deleteUser(req.session.phoneNumber);
+    res.status(500).end('User verified incorrectly and deleted');
+  })
+});
+
+app.post('/createPassword', function(req, res) {
+  let phoneNumber = req.session.phoneNumber;
+  console.log('entered password', req.body.password);
+  
+  let shasum = crypto.createHash('sha1');
+  shasum.update(req.body.password);
+  let password = shasum.digest('hex');
+  console.log('encrypted', password);
+
+  new Promise((resolve, reject) => {
+   resolve(db.updatePassword(phoneNumber, password));
+  })
+  .then(() => {
+    res.status(201).end('Password created');
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).end('Password not stored');
+  })
+});
+
+app.post('/login', function(req, res) {
+  let phoneNumber = req.body.phoneNumber;
+  let shasum = crypto.createHash('sha1');
+  shasum.update(req.body.password);
+  let password = shasum.digest('hex');
+
+  db.loginUser(phoneNumber, password)
+    .then(user => {
+      if (user.rows.length === 1) {
+        req.session.phoneNumber = req.body.phoneNumber;
+        req.session.loggedIn = true;
+        res.status(201).end('User logged in successfully');
       } else {
-        reject();
+        res.status(500).end('User not logged in');
       }
-    })
-    .then(() => {
-      res.status(201).end('User verified');
     })
     .catch(err => {
       console.log(err);
-      db.deleteUser(req.session.phoneNumber);
-      res.status(500).end('User verified incorrectly and deleted');
+      res.status(500).end('User login incorrect');
     })
 });
 
@@ -72,13 +116,13 @@ app.post('/schedule', function(req, res) {
   new Promise((resolve, reject) => {
    resolve(db.insertMessage(message, scheduledTime, phoneNumber));
   })
-    .then(() => {
-      res.status(201).end('Reminder stored');
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).end('Message not stored');
-    })
+  .then(() => {
+    res.status(201).end('Reminder stored');
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).end('Message not stored');
+  })
 });
 
 app.listen(process.env.PORT, function() {

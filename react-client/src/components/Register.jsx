@@ -45,7 +45,7 @@ class Register extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Enter Your Phone Number to Register: </Header>
+      <Header size='medium' style={text}> Enter your Phone Number to Register: </Header>
       <Input style={input} placeholder='Enter Phone Number Here...' value={this.state.phoneNumber} onChange={this.onChange}></Input>
       <Button style={button} inverted color='black' onClick={this.register}>Register</Button>
     </div>)
