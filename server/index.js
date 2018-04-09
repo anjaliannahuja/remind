@@ -68,12 +68,10 @@ app.post('/verify', function (req, res) {
 
 app.post('/createPassword', function(req, res) {
   let phoneNumber = req.session.phoneNumber;
-  console.log('entered password', req.body.password);
   
   let shasum = crypto.createHash('sha1');
   shasum.update(req.body.password);
   let password = shasum.digest('hex');
-  console.log('encrypted', password);
 
   new Promise((resolve, reject) => {
    resolve(db.updatePassword(phoneNumber, password));
