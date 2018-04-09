@@ -45,7 +45,7 @@ class CreatePassword extends React.Component {
   render () {
     return (<div>
       <Header size='medium' style={text}> Enter a Password to login next time: </Header>
-      <Input style={input} placeholder='Enter Password Here' value={this.state.password} onChange={this.onChange}></Input>
+      <Input type='password' style={input} placeholder='Enter Password Here' value={this.state.password} onChange={this.onChange}></Input>
       <Button style={button} inverted color='black' onClick={this.createPassword}>Create</Button>
     </div>)
   }

@@ -54,7 +54,7 @@ class Login extends React.Component {
     return (<div>
       <Header size='medium' style={text}> Enter your Phone Number and Password: </Header>
       <Input style={input} placeholder='Enter Phone Number Here' value={this.state.phoneNumber} onChange={this.onPhoneChange}></Input>      
-      <Input style={input} placeholder='Enter Password Here' value={this.state.password} onChange={this.onPasswordChange}></Input>
+      <Input type='password' style={input} placeholder='Enter Password Here' value={this.state.password} onChange={this.onPasswordChange}></Input>
       <Button style={button} inverted color='black' onClick={this.login}>Login</Button>
     </div>)
   }

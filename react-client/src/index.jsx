@@ -131,7 +131,8 @@ class App extends React.Component {
     .then(response => {
       console.log(response);
       this.setState({
-        pageCount: 5
+        pageCount: 5,
+        activeItem: ''
       })
     })
     .catch(err => console.log(err));
@@ -151,7 +152,7 @@ class App extends React.Component {
       pageNav = <CreatePassword onCreatePassword={this.createPassword} />
     } else if (this.state.pageCount === 4 || this.state.activeItem === 'schedule') {
       pageNav = <Schedule onSchedule={this.scheduleReminder} />
-    } else if (this.state.pageCount != 1) {
+    } else if (this.state.pageCount === 5) {
       pageNav = <Header size="medium" style={title}>Thank you for scheduling a reminder!</Header>
     } else if (this.state.activeItem === 'logout') {
       pageNav = <Header size="medium" style={title}>You are now logged out</Header>
@@ -170,7 +171,7 @@ class App extends React.Component {
           Login
         </Menu.Item> : 
         <Menu.Item
-          name='ScheduleReminder'
+          name='schedule'
           active={this.state.activeItem === 'schedule'}
           onClick={this.setScheduleActive}
         >
