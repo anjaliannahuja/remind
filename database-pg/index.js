@@ -1,4 +1,5 @@
 var pg = require('pg');
+require('dotenv').config()
 
 var connection = (process.env.DATABASE_URL);
 

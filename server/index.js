@@ -3,7 +3,7 @@ let bodyParser = require('body-parser');
 let session = require('express-session')
 let db = require('../database-pg/index');
 let helpers = require('../helpers/twilio');
-require('dotenv').config()
+require('dotenv').config();
 
 let app = express();
 
