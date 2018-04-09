@@ -9,6 +9,7 @@ import Login from './components/Login.jsx';
 import axios from 'axios';
 import { Header } from 'semantic-ui-react';
 import { Menu } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 const title = {
   'padding': '15px',
@@ -160,7 +161,7 @@ class App extends React.Component {
     
 
     return (<div>
-      <Header size="large" style={title}>Remind Me</Header>
+      <Header size="large" style={title}><Icon name='comment outline' />Remind</Header>
       <Menu>
         {(!this.state.loggedIn ? 
         <Menu.Item
