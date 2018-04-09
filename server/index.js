@@ -33,14 +33,13 @@ app.post('/register', function (req, res) {
     resolve(db.createUser(phoneNumber, verifyCode));
   })
   .then(() => {
-    helpers.createTwilioMessage(phoneNumber, 'Verification Number: ' + verifyCode);
+    helpers.createTwilioMessage(phoneNumber, 'Remind Verification Code: ' + verifyCode);
     req.session.verified = false;
     req.session.phoneNumber = phoneNumber;
     req.session.verifyCode = verifyCode;
     res.status(201).end(' Verification message sent!');
   })
   .catch((err) => {
-    console.log(err);
     res.status(500).end('Fail to send verification code');
   });
 });
@@ -60,7 +59,6 @@ app.post('/verify', function (req, res) {
     res.status(201).end('User verified');
   })
   .catch(err => {
-    console.log(err);
     db.deleteUser(req.session.phoneNumber);
     res.status(500).end('User verified incorrectly and deleted');
   })
@@ -80,7 +78,6 @@ app.post('/createPassword', function(req, res) {
     res.status(201).end('Password created');
   })
   .catch(err => {
-    console.log(err);
     res.status(500).end('Password not stored');
   })
 });
@@ -102,7 +99,6 @@ app.post('/login', function(req, res) {
       }
     })
     .catch(err => {
-      console.log(err);
       res.status(500).end('User login incorrect');
     })
 });
@@ -118,7 +114,6 @@ app.post('/schedule', function(req, res) {
     res.status(201).end('Reminder stored');
   })
   .catch(err => {
-    console.log(err);
     res.status(500).end('Message not stored');
   })
 });
