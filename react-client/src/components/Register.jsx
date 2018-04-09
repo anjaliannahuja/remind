@@ -1,5 +1,4 @@
 import React from 'react';
-// import ListItem from './ListItem.jsx';
 
 class Register extends React.Component {
   constructor(props) {
@@ -14,10 +13,6 @@ class Register extends React.Component {
 
   }
 
-  componentDidMount() {
-
-  }
-
   onChange(e) {
     this.setState({
       phoneNumber: e.target.value
@@ -28,9 +23,6 @@ class Register extends React.Component {
     this.props.onRegister(this.state.phoneNumber);
 
   }
-
-
-
 
   render () {
     return (<div>

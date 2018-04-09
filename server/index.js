@@ -34,6 +34,7 @@ app.post('/register', function (req, res) {
     .then(() => {
       helpers.createTwilioMessage(phoneNumber, 'Verification Number: ' + verifyCode);
       req.session.verified = false;
+      req.session.phoneNumber = phoneNumber;
       req.session.verifyCode = verifyCode;
       res.status(201).end(' Verification message sent!');
     })
@@ -45,10 +46,10 @@ app.post('/register', function (req, res) {
   
   
   app.post('/verify', function (req, res) {
-    let userVerifyCode = 1111;
+    let userVerifyCode = req.body.userVerifyCode;
     new Promise((resolve, reject) => {
-      if (userVerifyCode === req.session.verifyCode) {
-        resolve(db.updateStatus('3612496953'));
+      if (userVerifyCode === req.session.verifyCode.toString()) {
+        resolve(db.updateStatus(req.session.phoneNumber));
         req.session.verified = true;
       } else {
         reject();
@@ -59,15 +60,15 @@ app.post('/register', function (req, res) {
     })
     .catch(err => {
       console.log(err);
-      db.deleteUser('3612496953');
+      db.deleteUser(req.session.phoneNumber);
       res.status(500).end('User verified incorrectly and deleted');
     })
 });
 
 app.post('/schedule', function(req, res) {
-  let phoneNumber = '3612496953';
-  let message = 'REMINDER 1';
-  let scheduledTime = '2017-09-28 01:00';
+  let phoneNumber = req.session.phoneNumber;
+  let message = req.body.messageText;
+  let scheduledTime = req.body.scheduledTime;
   new Promise((resolve, reject) => {
    resolve(db.insertMessage(message, scheduledTime, phoneNumber));
   })
