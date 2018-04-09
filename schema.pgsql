@@ -14,7 +14,7 @@ CREATE TABLE users (
 CREATE TABLE messages (
   message_id BIGSERIAL PRIMARY KEY,
   message_text varchar(200) NOT NULL,
-  scheduled_time timestamp NOT NULL,
+  scheduled_time timestamp with time zone NOT NULL,
   user_id BIGSERIAL NOT NULL references users(user_id)
 );
 

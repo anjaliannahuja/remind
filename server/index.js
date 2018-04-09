@@ -68,7 +68,7 @@ app.post('/register', function (req, res) {
 app.post('/schedule', function(req, res) {
   let phoneNumber = req.session.phoneNumber;
   let message = req.body.messageText;
-  let scheduledTime = req.body.scheduledTime;
+  let scheduledTime = req.body.scheduledTime + '-05';
   new Promise((resolve, reject) => {
    resolve(db.insertMessage(message, scheduledTime, phoneNumber));
   })
