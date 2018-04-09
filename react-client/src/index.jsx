@@ -39,7 +39,6 @@ class App extends React.Component {
     })
     .catch(err => {
       console.log(err);
-      alert('Incorrect verification code. Please try to register again.')
       this.setState({
         pageCount: 1
       });
@@ -84,7 +83,7 @@ class App extends React.Component {
     } else if (this.state.pageCount === 3) {
       pageNav = <Schedule onSchedule={this.scheduleReminder} />
     } else {
-      pageNav = <h4>Thank you for scheduling a reminder!</h4>
+      pageNav = <Header size="medium" style={title}>Thank you for scheduling a reminder!</Header>
     }
 
     return (<div>
