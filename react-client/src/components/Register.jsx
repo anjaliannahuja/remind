@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 const text = {
   'padding': '15px',
@@ -10,8 +11,7 @@ const text = {
 }
 
 const input = {
-  'padding-left': '15px',
-  'padding-bottom': '15px',
+  'margin-left': '15px',
   'width': '250px'
 }
 
@@ -45,8 +45,8 @@ class Register extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Enter your Phone Number to Register: </Header>
-      <Input style={input} placeholder='Enter Phone Number Here...' value={this.state.phoneNumber} onChange={this.onChange}></Input>
+      <Header size='medium' style={text}> Enter your 10-digit Phone Number to Register: </Header>
+      <Input icon='phone' iconPosition='left' style={input} placeholder='xxx-xxx-xxxx' value={this.state.phoneNumber} onChange={this.onChange}></Input>
       <Button style={button} inverted color='black' onClick={this.register}>Register</Button>
     </div>)
   }

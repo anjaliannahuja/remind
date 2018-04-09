@@ -10,8 +10,7 @@ const text = {
 }
 
 const input = {
-  'padding-left': '15px',
-  'padding-bottom': '15px',
+  'margin-left': '15px',
   'width': '250px'
 }
 
@@ -55,9 +54,9 @@ class Schedule extends React.Component {
     return (<div>
       <Header size='medium' style={text}> Schedule your reminder below: </Header>
       <Header size='tiny' style={text}>Reminder Message: </Header>
-      <Input style={input} placeholder='Type reminder here' value={this.state.message} onChange={this.onMessageChange}></Input> <br/>
+      <Input icon='comment' iconPosition='left' style={input} placeholder='Message' value={this.state.message} onChange={this.onMessageChange}></Input> <br/>
       <Header size='tiny' style={text}>Scheduled Day and Time: </Header>
-      <Input style={input} value={this.state.scheduledTime} onChange={this.onScheduledChange} type="datetime-local"></Input> <br/> <br/>
+      <Input icon='calendar alternate' iconPosition='left' style={input} value={this.state.scheduledTime} onChange={this.onScheduledChange} type="datetime-local"></Input> <br/> <br/>
       <Button inverted color='black' style={button} onClick={this.schedule}>Schedule</Button>
     </div>)
   }

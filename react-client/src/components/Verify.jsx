@@ -10,8 +10,7 @@ const text = {
 }
 
 const input = {
-  'padding-left': '15px',
-  'padding-bottom': '15px',
+  'margin-left': '15px',
   'width': '250px'
 }
 
@@ -46,7 +45,7 @@ class Verify extends React.Component {
   render () {
     return (<div>
       <Header size='medium' style={text}> A verification code was sent to your number. Enter your code below:</Header>
-      <Input style={input} placeholder='Enter Verification Code...' value={this.state.verificationCode} onChange={this.onChange}></Input>
+      <Input icon='key' iconPosition='left' style={input} placeholder='Verification Code' value={this.state.verificationCode} onChange={this.onChange}></Input>
       <Button style={button} inverted color='black' onClick={this.verify}>Verify</Button>
     </div>)
   }

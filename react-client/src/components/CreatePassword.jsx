@@ -10,8 +10,7 @@ const text = {
 }
 
 const input = {
-  'padding-left': '15px',
-  'padding-bottom': '15px',
+  'margin-left': '15px',
   'width': '250px'
 }
 
@@ -45,7 +44,7 @@ class CreatePassword extends React.Component {
   render () {
     return (<div>
       <Header size='medium' style={text}> Enter a Password to login next time: </Header>
-      <Input type='password' style={input} placeholder='Enter Password Here' value={this.state.password} onChange={this.onChange}></Input>
+      <Input icon='lock' iconPosition='left' type='password' style={input} placeholder='Password' value={this.state.password} onChange={this.onChange}></Input>
       <Button style={button} inverted color='black' onClick={this.createPassword}>Create</Button>
     </div>)
   }

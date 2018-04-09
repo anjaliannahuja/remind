@@ -10,8 +10,7 @@ const text = {
 }
 
 const input = {
-  'padding-left': '15px',
-  'padding-bottom': '15px',
+  'margin-left': '15px',
   'width': '250px'
 }
 
@@ -52,9 +51,9 @@ class Login extends React.Component {
 
   render () {
     return (<div>
-      <Header size='medium' style={text}> Enter your Phone Number and Password: </Header>
-      <Input style={input} placeholder='Enter Phone Number Here' value={this.state.phoneNumber} onChange={this.onPhoneChange}></Input>      
-      <Input type='password' style={input} placeholder='Enter Password Here' value={this.state.password} onChange={this.onPasswordChange}></Input>
+      <Header size='medium' style={text}> Enter your 10-digit Phone Number and Password: </Header>
+      <Input icon='phone' iconPosition='left' style={input} placeholder='xxx-xxx-xxxx' value={this.state.phoneNumber} onChange={this.onPhoneChange}></Input>      
+      <Input icon='lock' iconPosition='left' type='password' style={input} placeholder='Password' value={this.state.password} onChange={this.onPasswordChange}></Input>
       <Button style={button} inverted color='black' onClick={this.login}>Login</Button>
     </div>)
   }
