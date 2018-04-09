@@ -4,7 +4,15 @@ import $ from 'jquery';
 import Register from './components/Register.jsx';
 import Verify from './components/Verify.jsx';
 import Schedule from './components/Schedule.jsx';
-import axios from 'axios'
+import axios from 'axios';
+import { Header } from 'semantic-ui-react';
+
+const title = {
+  'textTransform': 'uppercase',
+  'padding': '15px',
+  'fontFamily': 'Trebuchet MS, Helvetica, sans-serif',
+  'color':'white'
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -18,9 +26,6 @@ class App extends React.Component {
       pageCount: 1
     }
   }
-  componentDidMount() {
-    
-  }
 
   registerPhoneNumber (phoneNumber) {
     axios.post('/register', {
@@ -32,7 +37,13 @@ class App extends React.Component {
         pageCount: 2
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      alert('Incorrect verification code. Please try to register again.')
+      this.setState({
+        pageCount: 1
+      });
+    });
   }
 
   verifyPhoneNumber (verificationCode) {
@@ -73,11 +84,11 @@ class App extends React.Component {
     } else if (this.state.pageCount === 3) {
       pageNav = <Schedule onSchedule={this.scheduleReminder} />
     } else {
-      pageNav = <h4>Thank you for scheduling a reminder!</h4> <button >Send Another Reminder</button>
+      pageNav = <h4>Thank you for scheduling a reminder!</h4>
     }
 
     return (<div>
-      <h1>Remind Me</h1>
+      <Header size="large" style={title}>Remind Me</Header>
       {pageNav}
     </div>)
   }
